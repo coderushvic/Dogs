@@ -1,8 +1,9 @@
-// Initialize balance from localStorage or set to 0 if not exists
+// Initialize balance to 0 - will be loaded from localStorage
 let balance = 0;
 
 // Load balance when page loads
 function loadBalance() {
+    // Always start with 0 if no balance exists
     const storedBalance = localStorage.getItem('balance');
     balance = storedBalance !== null ? parseInt(storedBalance) : 0;
     updateBalance();
@@ -29,6 +30,7 @@ function handleAdClick(button, rewardAmount = 10) {
     const currentTime = Date.now();
     const cooldown = 60 * 1000; // 60 seconds cooldown
 
+    // Check cooldown
     if (currentTime - lastAdTime < cooldown) {
         const remainingTime = Math.ceil((cooldown - (currentTime - lastAdTime)) / 1000);
         showAlert(`Please wait ${remainingTime} seconds before watching the ad again.`);
@@ -55,7 +57,7 @@ function handleAdClick(button, rewardAmount = 10) {
             } else {
                 clearInterval(intervalId);
                 button.disabled = false;
-                button.textContent = "ðŸ¦´ Claim";
+                button.textContent = "🦴 Claim";
             }
         }, 1000);
     }
@@ -63,7 +65,7 @@ function handleAdClick(button, rewardAmount = 10) {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    loadBalance();
+    loadBalance(); // Will initialize balance to 0 for new users
     
     // Add click event to your ad button (make sure it exists)
     const adButton = document.getElementById('adButton'); // replace with your button's ID
