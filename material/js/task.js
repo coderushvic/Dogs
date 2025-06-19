@@ -4,6 +4,11 @@ const taskCooldowns = new Map();
 
 // Initialize task buttons on page load
 function initializeTasks() {
+    // Initialize balance to 0 if not exists
+    if (localStorage.getItem('balance') === null) {
+        localStorage.setItem('balance', '0');
+    }
+    
     document.querySelectorAll('.task-button').forEach(button => {
         const taskId = button.id || 'default-task';
         const lastCompletion = localStorage.getItem(`taskCooldown_${taskId}`);
@@ -42,7 +47,7 @@ function handleTaskClick(button, rewardAmount) {
     });
 }
 
-// Cooldown management
+// Cooldown management (unchanged)
 function startCooldown(button, seconds) {
     button.classList.add('cooldown-active');
     button.disabled = true;
@@ -78,7 +83,7 @@ function updateButtonText(button, seconds) {
     button.textContent = seconds > 0 ? `Wait ${seconds}s` : "🦴 Claim";
 }
 
-// Reward processing
+// Reward processing - fixed to properly handle initial zero balance
 function processReward(amount) {
     const balance = parseInt(localStorage.getItem('balance')) || 0;
     const newBalance = balance + amount;
@@ -93,7 +98,7 @@ function updateBalanceDisplay(balance) {
     }
 }
 
-// Notification system (using your existing CSS classes)
+// Notification system (unchanged)
 function showSuccessNotification(rewardAmount) {
     const notification = createNotification(
         `+${rewardAmount} coins earned!`,
@@ -145,7 +150,7 @@ function showNotification(notification) {
     }, 5000);
 }
 
-// Ad service integration (mock implementation)
+// Ad service integration (mock implementation - unchanged)
 function showAd() {
     return new Promise((resolve, reject) => {
         // Replace with your actual ad service integration
@@ -157,8 +162,13 @@ function showAd() {
     });
 }
 
-// Initialize on DOM load
+// Initialize on DOM load - fixed to ensure zero balance initialization
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize balance if not exists
+    if (localStorage.getItem('balance') === null) {
+        localStorage.setItem('balance', '0');
+    }
+    
     initializeTasks();
     
     // Initialize balance display
